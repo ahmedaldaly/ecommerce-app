@@ -53,23 +53,55 @@ module.exports.updateOrder  =asyncHandler(async(req,res)=> {
         $set:{
             quantity:req.body.quantity,
             address:req.body.address,
-            stuts:req.body.stuts,
+            status:req.body.status,
         },
     },{new:true})
     res.status(201).json(Update)
 })
 module.exports.getAllOrder = asyncHandler(async (req, res) => {
     try {
-      const order =  await Order.find()
-      const productId = order[0]?.product;
-      const usertId = order[0]?.user;
-      const users =await User.findById(usertId)
-      const products =await Product.findById(productId)
-        return res.status(201).json({ order:order,User:users, data:products});
+        const orders = await Order.find(); // جلب كل الأوامر
+        
+        // تحقق من وجود بيانات للأوامر
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ message: "No orders found" });
+        }
+
+        // نستخدم map لجلب تفاصيل كل أمر
+        const ordersDetails = await Promise.all(orders.map(async (order) => {
+            const productId = order.product;
+            const userId = order.user;
+
+            const users = await User.findById(userId);
+            const products = await Product.findById(productId);
+
+            // إذا كان المستخدم أو المنتج غير موجودين
+            if (!users || !products) {
+                return null;  // تجاهل هذا الأمر في حال لم يتم العثور على المستخدم أو المنتج
+            }
+
+            return {
+                id: order._id,
+                user: users.email,
+                image: products.image,
+                title: products.title,
+                status: order.status,
+                address: order.address,
+                quantity: order.quantity,
+            };
+        }));
+
+        // تصفية العناصر التي تحتوي على قيمة null (أي التي لم يتم العثور على مستخدم أو منتج لها)
+        const validOrders = ordersDetails.filter(order => order !== null);
+
+        // إرجاع جميع الأوامر التي تم العثور عليها
+        return res.status(200).json(validOrders);
+
     } catch (err) {
-        return res.status(400).json({ message: "not found order", error: err.message });
+        return res.status(400).json({ message: "Not found order", error: err.message });
     }
 });
+
 module.exports.getUserOrder = asyncHandler(async (req, res) => {
     try {
         // التحقق من وجود التوكن

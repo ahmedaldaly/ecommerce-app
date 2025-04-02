@@ -28,18 +28,19 @@ module.exports.searchProduct = asyncHandler(async (req, res) => {
 
 module.exports.GetProductByCategory = asyncHandler(async (req, res) => {
     const category = await Category.findById(req.params.id)
-    const product = await Product.findOne({title:req.params.id})
+    const product = await Product.find({category:category.name})
     if (!category || !product) {
         res.status(404).json({message:'Product Not Found'})
     }
-    res.status(200).json ({data:{
-      title:product.title,
-      desc:product.desc,
-      category:category.name,
-      price:product.price,
-      review:product.review,
-      sale:product.sale,
-      image:product.image.url
-    }})
+    res.status(200).json (product)
+  });
+  
+module.exports.GetProduct = asyncHandler(async (req, res) => {
+    
+    const product = await Product.find()
+    if ( !product) {
+        res.status(404).json({message:'Product Not Found'})
+    }
+    res.status(200).json (product)
   });
   

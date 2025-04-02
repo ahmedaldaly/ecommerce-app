@@ -20,10 +20,10 @@ const OrderSchema = new mongoose.Schema({
         type:String,
         default:'No titles added.',
     },
-    stuts:{
+    status: {  // تم التصحيح هنا من stuts إلى status
         type: String,
-        enum: ['pending', 'shipped', 'delivered', 'canceled'], // القيم المسموح بها فقط
-        default: 'pending' // قيمة افتراضية
+        enum: ['pending', 'shipped', 'delivered', 'canceled'],
+        default: 'pending'
     }
 }, { timestamps: true });
 

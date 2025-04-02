@@ -14,7 +14,7 @@ const productSchema = mongoose.Schema({
     required: true,
     trim: true,
     minlength: 5,
-    maxlength: 200,
+    maxlength: 400,
   },
   category: {
     type: String, // مرجع إلى التصنيف
@@ -53,7 +53,7 @@ const Product = mongoose.model('Product', productSchema);
 function validateProduct(obj) {
   const schema = Joi.object({
     title: Joi.string().min(5).max(100).required(),
-    desc: Joi.string().min(5).max(200).required(),
+    desc: Joi.string().min(5).max(400).required(),
     category: Joi.string().required(),
     price: Joi.number().min(1).required(),
     review: Joi.number().valid(1, 2, 3, 4, 5).required(),

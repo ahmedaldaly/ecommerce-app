@@ -1,9 +1,20 @@
-
+const jwt =require ('jsonwebtoken')
 const asyncHandler = require('express-async-handler');
 const { User } = require('../models/User');
 const generateToken = require ('../middleware/createToken')
 module.exports.getUser = asyncHandler (async (req, res)=> {
-    const user = await User.find().select('-password');
+    const user = await User.find().select('-passwoard');
+    if (!user) {
+        res.status (404).json ({message:'users not found'})
+    } 
+    
+    res.status(200).json({data:user});
+})
+module.exports.tokenUser = asyncHandler (async (req, res)=> {
+    const auth =  req.headers.authorization;
+    const token = auth.split(' ')[1];
+    const decoded = jwt.verify(token , process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select('-passwoard');
     if (!user) {
         res.status (404).json ({message:'users not found'})
     } 

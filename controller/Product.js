@@ -20,7 +20,7 @@ module.exports.GetOneProduct = asyncHandler(async (req, res) => {
   if (!product) {
     return res.status(404).json('No Product Found');
   }
-  res.status(200).json(product);
+  res.status(200).json([product]);
 });
 
 // إضافة منتج جديد مع صور متعددة
