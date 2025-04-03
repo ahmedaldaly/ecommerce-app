@@ -12,6 +12,7 @@ import { FaGoogle } from "react-icons/fa";
 type FormData = {
   email: string;
   passwoard: string;
+  username: string;
 };
 const Form = () => {
   const {
@@ -23,11 +24,13 @@ const Form = () => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await axios
-        .post(`${BaseUrl}/api/vi/auth/login`, {
+        .post(`${BaseUrl}/api/vi/auth/register`, {
           email: data.email,
+          username: data.username,
           passwoard: data.passwoard, // سيتم إصلاحها في الخطوة التالية
         }).then((data)=>{
-          cookie.set('token',data.data.token)
+          console.log(data)
+          cookie.set('token',data.data.user.token)
         
         })
        await toast.success('Login Success')
@@ -50,6 +53,13 @@ const Form = () => {
         type="email"
         {...register("email")}
       />
+      <label>{isArabic ? "اسم المستخدم" : "UserName:"}</label>
+      <input
+      placeholder={isArabic?'ادخل اسم المستخدم...':'enter your username ....'}
+        className="w-full h-11 border-1 px-5 border-gray-300 rounded-xl shadow-md"
+        type="text"
+        {...register("username")}
+      />
       <label >{isArabic ? "كلمة المرور" : "Password:"}</label>
       <input
       placeholder={isArabic?'ادخل كلمة المرور...':'enter your password...'}
@@ -59,7 +69,6 @@ const Form = () => {
       />
       <button className="w-full h-11 text-center border-1 hover:scale-105 hover:shadow-xl duration-300 border-gray-200 mt-10 rounded-xl cursor-pointer bg-gray-100" type="submit">{isArabic ? "دخول" : "Log In"}</button>
       <ToastContainer position="top-right" autoClose={3000} />
-      <Link className="text-blue-700" href='/register'>{isArabic?"انشاء حساب":"/ Create Acount"}</Link>
       <Link className="w-44 h-12 border-1 shadow-md flex justify-center items-center border-gray-200 my-5 mx-auto gap-2 hover:scale-105 hover:shadow-xl duration-300"
        href={`${BaseUrl}/api/vi/auth/google`}><FaGoogle/>{isArabic?"عبر جوجل":"Google"}</Link>
     </form>
