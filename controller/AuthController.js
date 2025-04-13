@@ -64,7 +64,7 @@ passport.use(
   
       req.user = user;
       console.log("User authenticated successfully:", req.user);
-      res.redirect(`http://localhost:3000/profile?token=${req.user.token}`);
+      res.redirect(`https://ecommerce-next-lime-ten.vercel.app/profile?token=${req.user.token}`);
     })(req, res, next);
   };
   
