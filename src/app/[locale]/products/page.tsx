@@ -70,7 +70,7 @@ const Page = () => {
                 onMouseLeave={() => handleMouseLeave(item._id)}
                 src={item.image[imageIndexes[item._id] || 0]?.url}
                 alt={item.title}
-                className="w-full h-auto object-cover rounded-md cursor-pointer transition-all duration-300"
+                className="w-full h-72 object-cover rounded-md cursor-pointer transition-all duration-300"
                 whileHover={{ scale: 1.05 }} // تأثير تكبير الصورة عند التمرير عليها
               />
               <h2 className="text-lg font-semibold mt-2">{item.category}</h2>
