@@ -30,7 +30,7 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get<Product[]>(`${BaseUrl}/api/vi/search`);
+        const { data } = await axios.get<Product[]>(`${BaseUrl}/api/vi/search/${id}`);
         console.log(data);
         setProduct(data);
       } catch (err) {
@@ -76,7 +76,7 @@ const ProductPage = () => {
                   onMouseLeave={() => handleMouseLeave(item._id)}
                   src={item.image[imageIndexes[item._id] || 0]?.url}
                   alt={item.title}
-                  className="w-full h-auto object-cover rounded-md cursor-pointer transition-all duration-300"
+                  className="w-full h-72 object-center object-cover rounded-md cursor-pointer transition-all duration-300"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}

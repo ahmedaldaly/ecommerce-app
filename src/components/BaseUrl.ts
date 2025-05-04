@@ -1,3 +1,3 @@
-const BaseUrl:String = 'https://ecommerce-app-lemon-two.vercel.app';
+const BaseUrl:String = 'http://localhost:4000';
 
 export default BaseUrl;
